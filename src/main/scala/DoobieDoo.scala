@@ -4,6 +4,8 @@ import doobie.hikari.HikariTransactor
 import doobie.implicits._
 import doobie.util.ExecutionContexts
 import doobie.util.transactor.Transactor.Aux
+import scala.concurrent.duration._
+import scala.language.postfixOps
 
 /** Create a table called Country in a database called world according to the
   * [Doobie docs](https://tpolecat.github.io/doobie/docs/04-Selecting.html). */
@@ -12,16 +14,20 @@ case class Country(code: String, name: String, population: Int, gnp: Option[Doub
 object DoobieDoo extends App {
   implicit val cs: ContextShift[IO] = IO.contextShift(ExecutionContexts.synchronous)
 
+  val sqlTimeout: Duration = 30 seconds
+
+  /** Single threaded, just for testing */
   val xaSynch: Aux[IO, Unit] = Transactor.fromDriverManager[IO](
     "org.postgresql.Driver",      // driver classname
     "jdbc:postgresql:world",      // connect URL (driver-specific)
     "postgres",                   // username
     "",                           // password
-    ExecutionContexts.synchronous // just for testing
+    ExecutionContexts.synchronous
   )
 
-  /** Modified for Postgres from https://tpolecat.github.io/doobie/docs/14-Managing-Connections.html#using-a-hikaricp-connection-pool */
-  val xaFixed: Resource[IO, HikariTransactor[IO]] =
+  /** Multi-threaded transactional resource. Modified for Postgres from
+    * https://tpolecat.github.io/doobie/docs/14-Managing-Connections.html#using-a-hikaricp-connection-pool */
+  val xaAsynch: Resource[IO, HikariTransactor[IO]] =
     for {
       connectEC     <- ExecutionContexts.fixedThreadPool[IO](32)
       transactionEC <- ExecutionContexts.cachedThreadPool[IO]
@@ -56,20 +62,25 @@ object DoobieDoo extends App {
          |  ${country.code}, ${country.name}, ${country.population}, ${country.gnp}
          |)""".stripMargin.update
 
-  // I could not find a code example in the docs for deleting records. This is my version, which works:
-  sql"delete from country".update.run.transact(xaSynch).unsafeRunSync
+  // I could not find a code example in the docs for deleting records. This is my version using xaSynch:
+  sql"delete from country".update.run.transact(xaSynch).unsafeRunTimed(sqlTimeout)
 
-  // See https://www.worldometers.info/world-population/us-population/
-  // See https://tradingeconomics.com/united-states/gross-national-product (this is for Q1/19)
+  /** Delete a case class */
+  def delete(country: Country): Option[Int] = xaAsynch.use { xa =>
+    sql"delete from country where code = '${ country.code }'".update.run.transact(xa)
+  }.unsafeRunTimed(sqlTimeout)
+
+  // Data taken from https://www.worldometers.info/world-population/us-population/
+  // Data taken from https://tradingeconomics.com/united-states/gross-national-product (for Q1/19)
   val usa = Country("USA", "United States", 328964220, Some(19132940000000.0))
-  insert1(usa).run.transact(xaSynch).unsafeRunSync
+  insert1(usa).run.transact(xaSynch).unsafeRunTimed(sqlTimeout)
 
-  val result: Seq[Country] = xaFixed.use { xa =>
+  val result: List[Country] = xaAsynch.use { xa =>
     sql"select code, name, population, gnp from country"
     .query[Country]
     .to[List]
     .transact(xa)
-  }.unsafeRunSync()
+  }.unsafeRunTimed(sqlTimeout).toList.flatten
 
   println(result.mkString("\n"))
 }
