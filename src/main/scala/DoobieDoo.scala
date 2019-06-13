@@ -7,7 +7,7 @@ import doobie.util.transactor.Transactor.Aux
 
 /** Create a table called Country in a database called world according to the
   * [Doobie docs](https://tpolecat.github.io/doobie/docs/04-Selecting.html). */
-case class Country(code: String, name: String, pop: Int, gnp: Option[Double])
+case class Country(code: String, name: String, population: Int, gnp: Option[Double])
 
 object DoobieDoo extends App {
   implicit val cs: ContextShift[IO] = IO.contextShift(ExecutionContexts.synchronous)
@@ -20,13 +20,7 @@ object DoobieDoo extends App {
     ExecutionContexts.synchronous // just for testing
   )
 
-  /** Modified for Postgres from https://tpolecat.github.io/doobie/docs/14-Managing-Connections.html#using-a-hikaricp-connection-pool
-    * Note that the type for xaFixed does not match xaSynch's type, and the following error message appears if it is used.
-    * Error:(47, 14) type mismatch;
-    * found   : cats.effect.Resource[cats.effect.IO,doobie.hikari.HikariTransactor[cats.effect.IO]]
-    * (which expands to)  cats.effect.Resource[cats.effect.IO,doobie.util.transactor.Transactor[cats.effect.IO]{type A = com.zaxxer.hikari.HikariDataSource}]
-    * required: doobie.util.transactor.Transactor[?]
-    * transact(xaFixed). */
+  /** Modified for Postgres from https://tpolecat.github.io/doobie/docs/14-Managing-Connections.html#using-a-hikaricp-connection-pool */
   val xaFixed: Resource[IO, HikariTransactor[IO]] =
     for {
       connectEC <- ExecutionContexts.fixedThreadPool[IO](32)
@@ -34,7 +28,7 @@ object DoobieDoo extends App {
       xa <- HikariTransactor.newHikariTransactor[IO](
               "org.postgresql.Driver",                // driver classname
               "jdbc:postgresql:world",                // connect URL
-              "sa",                                   // username
+              "postgres",                             // username
               "",                                     // password
               connectEC,                              // await connection here
               transactionEC                           // execute JDBC operations here
@@ -59,10 +53,10 @@ object DoobieDoo extends App {
     sql"""insert into country (
          |  code, name, population, gnp
          |) values (
-         |  ${country.code}, ${country.name}, ${country.pop}, ${country.gnp}
+         |  ${country.code}, ${country.name}, ${country.population}, ${country.gnp}
          |)""".stripMargin.update
 
-  // I could not find a code example in the docs for deleting records. This is my attempt:
+  // I could not find a code example in the docs for deleting records. This is my version, which works:
   sql"delete from country".update.run.transact(xaSynch).unsafeRunSync
 
   // See https://www.worldometers.info/world-population/us-population/
@@ -70,11 +64,12 @@ object DoobieDoo extends App {
   val usa = Country("USA", "United States", 328964220, Some(19132940000000.0))
   insert1(usa).run.transact(xaSynch).unsafeRunSync
 
-  val result: Seq[Country] = sql"select code, name, population, gnp from country"
+  val result: Seq[Country] = xaFixed.use { xa =>
+    sql"select code, name, population, gnp from country"
     .query[Country]
     .to[List]
-    .transact(xaSynch)
-    .unsafeRunSync
+    .transact(xa)
+  }.unsafeRunSync()
 
   println(result.mkString("\n"))
 }
