@@ -9,6 +9,39 @@ To run under Scala 2.12, type:
     sbt run
 
 ## Running under Scala 2.13
+
+Editing `build.sbt` and changing these lines to read:
+
+```
+//scalaVersion := "2.12.8"   // comment this line to use Scala 2.13
+scalaVersion := "2.13.0" // uncomment this line to use Scala 2.13
+```
+
+Yields this error:
+```
+[error] coursier.ResolutionException: Encountered 4 error(s) in dependency resolution:
+[error]     org.tpolecat:doobie-hikari_2.13:0.7.0:
+[error]         not found:
+[error]             /home/mslinn/.ivy2/local/org.tpolecat/doobie-hikari_2.13/0.7.0/ivys/ivy.xml
+[error]             https://repo1.maven.org/maven2/org/tpolecat/doobie-hikari_2.13/0.7.0/doobie-hikari_2.13-0.7.0.pom
+[error]             https://dl.bintray.com/mslinn/maven/org/tpolecat/doobie-hikari_2.13/0.7.0/doobie-hikari_2.13-0.7.0.pom
+[error]     org.tpolecat:doobie-scalatest_2.13:0.7.0:
+[error]         not found:
+[error]             /home/mslinn/.ivy2/local/org.tpolecat/doobie-scalatest_2.13/0.7.0/ivys/ivy.xml
+[error]             https://repo1.maven.org/maven2/org/tpolecat/doobie-scalatest_2.13/0.7.0/doobie-scalatest_2.13-0.7.0.pom
+[error]             https://dl.bintray.com/mslinn/maven/org/tpolecat/doobie-scalatest_2.13/0.7.0/doobie-scalatest_2.13-0.7.0.pom
+[error]     org.tpolecat:doobie-postgres_2.13:0.7.0:
+[error]         not found:
+[error]             /home/mslinn/.ivy2/local/org.tpolecat/doobie-postgres_2.13/0.7.0/ivys/ivy.xml
+[error]             https://repo1.maven.org/maven2/org/tpolecat/doobie-postgres_2.13/0.7.0/doobie-postgres_2.13-0.7.0.pom
+[error]             https://dl.bintray.com/mslinn/maven/org/tpolecat/doobie-postgres_2.13/0.7.0/doobie-postgres_2.13-0.7.0.pom
+[error]     org.tpolecat:doobie-core_2.13:0.7.0:
+[error]         not found:
+[error]             /home/mslinn/.ivy2/local/org.tpolecat/doobie-core_2.13/0.7.0/ivys/ivy.xml
+[error]             https://repo1.maven.org/maven2/org/tpolecat/doobie-core_2.13/0.7.0/doobie-core_2.13-0.7.0.pom
+[error]             https://dl.bintray.com/mslinn/maven/org/tpolecat/doobie-core_2.13/0.7.0/doobie-core_2.13-0.7.0.pom
+```    
+
 To run under Scala 2.13, you should be able to type:
 
     sbt "; ++ 2.13.0; run"
@@ -100,53 +133,21 @@ However, errors appear instead:
 [error]         at xsbt.boot.Boot.main(Boot.scala)
 ```
 
-Editing `build.sbt` and changing these lines to read:
-
-```
-//scalaVersion := "2.12.8"   // comment this line to use Scala 2.13
-scalaVersion := "2.13.0" // uncomment this line to use Scala 2.13
-```
-
-Yields this error:
-```
-[error] coursier.ResolutionException: Encountered 4 error(s) in dependency resolution:
-[error]     org.tpolecat:doobie-hikari_2.13:0.7.0:
-[error]         not found:
-[error]             /home/mslinn/.ivy2/local/org.tpolecat/doobie-hikari_2.13/0.7.0/ivys/ivy.xml
-[error]             https://repo1.maven.org/maven2/org/tpolecat/doobie-hikari_2.13/0.7.0/doobie-hikari_2.13-0.7.0.pom
-[error]             https://dl.bintray.com/mslinn/maven/org/tpolecat/doobie-hikari_2.13/0.7.0/doobie-hikari_2.13-0.7.0.pom
-[error]     org.tpolecat:doobie-scalatest_2.13:0.7.0:
-[error]         not found:
-[error]             /home/mslinn/.ivy2/local/org.tpolecat/doobie-scalatest_2.13/0.7.0/ivys/ivy.xml
-[error]             https://repo1.maven.org/maven2/org/tpolecat/doobie-scalatest_2.13/0.7.0/doobie-scalatest_2.13-0.7.0.pom
-[error]             https://dl.bintray.com/mslinn/maven/org/tpolecat/doobie-scalatest_2.13/0.7.0/doobie-scalatest_2.13-0.7.0.pom
-[error]     org.tpolecat:doobie-postgres_2.13:0.7.0:
-[error]         not found:
-[error]             /home/mslinn/.ivy2/local/org.tpolecat/doobie-postgres_2.13/0.7.0/ivys/ivy.xml
-[error]             https://repo1.maven.org/maven2/org/tpolecat/doobie-postgres_2.13/0.7.0/doobie-postgres_2.13-0.7.0.pom
-[error]             https://dl.bintray.com/mslinn/maven/org/tpolecat/doobie-postgres_2.13/0.7.0/doobie-postgres_2.13-0.7.0.pom
-[error]     org.tpolecat:doobie-core_2.13:0.7.0:
-[error]         not found:
-[error]             /home/mslinn/.ivy2/local/org.tpolecat/doobie-core_2.13/0.7.0/ivys/ivy.xml
-[error]             https://repo1.maven.org/maven2/org/tpolecat/doobie-core_2.13/0.7.0/doobie-core_2.13-0.7.0.pom
-[error]             https://dl.bintray.com/mslinn/maven/org/tpolecat/doobie-core_2.13/0.7.0/doobie-core_2.13-0.7.0.pom
-```    
-
 ## Running the Program as an Assembly
 The `bin/run` Bash script assembles this project into a fat jar and runs it.
-Sample usage, which runs the `Hello` entry point in `src/main/scala/Hello.scala`:
+Sample usage, which runs the `DoobieDoo` entry point in `src/main/scala/DoobieDoo.scala`:
 
 ```
-$ bin/run DoobieDoo
+$ bin/run
 ```
 
-This error results:
+Error:
 
-```
+```text
 [error] 1 error was encountered during merge
 [error] java.lang.RuntimeException: deduplicate: different file contents found in the following:
-[error] /home/mslinn/.cache/coursier/v1/https/repo1.maven.org/maven2/org/jruby/jcodings/jcodings/1.0.43/jcodings-1.0.43.jar:module-info.class
-[error] /home/mslinn/.cache/coursier/v1/https/repo1.maven.org/maven2/org/jruby/joni/joni/2.1.27/joni-2.1.27.jar:module-info.class
+[error] /home/mslinn/.ivy2/cache/org.jruby.joni/joni/jars/joni-2.1.27.jar:module-info.class
+[error] /home/mslinn/.ivy2/cache/org.jruby.jcodings/jcodings/jars/jcodings-1.0.43.jar:module-info.class
 [error]         at sbtassembly.Assembly$.applyStrategies(Assembly.scala:143)
 [error]         at sbtassembly.Assembly$.x$1$lzycompute$1(Assembly.scala:25)
 [error]         at sbtassembly.Assembly$.x$1$1(Assembly.scala:23)
@@ -171,12 +172,10 @@ This error results:
 [error]         at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
 [error]         at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
 [error]         at java.base/java.lang.Thread.run(Thread.java:834)
-[error] (assembly) deduplicate: different file contents found in the following:
 ```
-
 The `-j` option forces a rebuild of the fat jar. 
 Use it after modifying the source code.
 
 ```
-$ bin/run -j DoobieDoo
+$ bin/run -j
 ```
