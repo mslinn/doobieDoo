@@ -1,7 +1,17 @@
 # DoobieDoo
 
 This project contains an [Ammonite script](doobie.sc) and [sample code](src/main/scala/DoobieDoo.scala) for 
-[Doobie issue 913](https://github.com/tpolecat/doobie/issues/914).
+[Doobie issue 913](https://github.com/tpolecat/doobie/issues/914). 
+The Ammonite script fails, don't know why, and I don't really care.
+
+Issues demonstrated in the sample code:
+
+ * There is no SQL delete example in the Doobie docs, so I show code to do that
+ * Synchronous and asynchronous transactors are not drop-in replacements for each other, so I show how to use both
+ * DDL to create and delete tables does nothing. I'd like suggestions on how to fix that.
+ * The sample code always uses unbounded waits to execute transactions. I modified the code to time out after 30 seconds.
+ * Serializing and deserializing case classes seems to require identical names of case class properties and sql table columns.
+   Quill handles that well, and Doobie/Quill integration has no documentation.
 
 ## Running under Scala 2.12
 To run under Scala 2.12, type:
