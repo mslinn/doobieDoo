@@ -73,8 +73,8 @@ object DoobieDoo extends App {
     sql"delete from country where code = '${ country.code }'".update.run.transact(xa)
   }.unsafeRunTimed(sqlTimeout)
 
-  // Data taken from https://www.worldometers.info/world-population/us-population/
-  // Data taken from https://tradingeconomics.com/united-states/gross-national-product (for Q1/19)
+  // Population data taken from https://www.worldometers.info/world-population/us-population/
+  // GDP data taken from https://tradingeconomics.com/united-states/gross-national-product (for Q1/19)
   val usa = Country("USA", "United States", 328964220, Some(19132940000000.0))
   insert1(usa).run.transact(xaSynch).unsafeRunTimed(sqlTimeout)
 
