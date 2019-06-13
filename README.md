@@ -21,7 +21,7 @@ Editing `build.sbt` and changing these lines to read:
 scalaVersion := "2.13.0" // uncomment this line to use Scala 2.13
 ```
 
-Yields this error:
+This error appears because Doobie has not yet released a version compatible with Scala 2.13:
 ```
 [error] coursier.ResolutionException: Encountered 4 error(s) in dependency resolution:
 [error]     org.tpolecat:doobie-hikari_2.13:0.7.0:
@@ -50,7 +50,7 @@ To run under Scala 2.13, you should be able to type:
 
     sbt "; ++2.13.0; run"
     
-However, errors similar to the previously shown errors appear instead because Doobie has not released a version compatible with Scala 2.13 yet.
+However, errors similar to the previously shown errors appear instead.
 
 
 ## Running the Program as an Assembly
