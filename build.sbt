@@ -30,14 +30,14 @@ javacOptions ++= Seq(
   "-g:vars"
 )
 
-// I used extra dependencies to mirror a problem I have in another project
+// I used extra dependencies to mirror another project which fails... seems these dependencies all play together fine
 lazy val doobieVersion = "0.7.0"
 libraryDependencies ++= Seq(
   "ch.qos.logback"             %  "logback-classic"  % "1.2.3"                withSources(),
-  "com.fasterxml.jackson.core" %  "jackson-databind" % "2.9.9"                withSources(),
-  "com.github.scopt"           %% "scopt"            % "4.0.0-RC2"            withSources(),
-  "net.thisptr"                %  "jackson-jq"       % "0.0.10"               withSources(),
-  "org.eclipse.jgit"           %  "org.eclipse.jgit" % "5.3.1.201904271842-r" withSources(),
+  "com.fasterxml.jackson.core" %  "jackson-databind" % "2.9.9"                withSources(), // extra
+  "com.github.scopt"           %% "scopt"            % "4.0.0-RC2"            withSources(), // extra
+  "net.thisptr"                %  "jackson-jq"       % "0.0.10"               withSources(), // extra
+  "org.eclipse.jgit"           %  "org.eclipse.jgit" % "5.3.1.201904271842-r" withSources(), // extra
   "org.tpolecat"               %% "doobie-core"      % doobieVersion          withSources(),
   "org.tpolecat"               %% "doobie-postgres"  % doobieVersion          withSources(),
   "org.tpolecat"               %% "doobie-hikari"    % doobieVersion          withSources(),
