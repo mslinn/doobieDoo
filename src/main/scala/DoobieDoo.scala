@@ -29,15 +29,15 @@ object DoobieDoo extends App {
     * transact(xaFixed). */
   val xaFixed: Resource[IO, HikariTransactor[IO]] =
     for {
-      ce <- ExecutionContexts.fixedThreadPool[IO](32) // our connect EC
-      te <- ExecutionContexts.cachedThreadPool[IO]    // our transaction EC
+      connectEC <- ExecutionContexts.fixedThreadPool[IO](32)
+      transactionEC <- ExecutionContexts.cachedThreadPool[IO]
       xa <- HikariTransactor.newHikariTransactor[IO](
-              "org.postgresql.Driver",                 // driver classname
-              "jdbc:postgresql:world",                 // connect URL
+              "org.postgresql.Driver",                // driver classname
+              "jdbc:postgresql:world",                // connect URL
               "sa",                                   // username
               "",                                     // password
-              ce,                                     // await connection here
-              te                                      // execute JDBC operations here
+              connectEC,                              // await connection here
+              transactionEC                           // execute JDBC operations here
             )
     } yield xa
 
