@@ -1,6 +1,6 @@
 assemblyMergeStrategy in assembly := {
   case PathList("META-INF", "MANIFEST.MF") => MergeStrategy.discard
-  case PathList("module-info.class") => MergeStrategy.first
+  case PathList("module-info.class")       => MergeStrategy.first
   case x =>
     val oldStrategy = (assemblyMergeStrategy in assembly).value
     oldStrategy(x)

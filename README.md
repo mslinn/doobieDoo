@@ -8,6 +8,10 @@ To run under Scala 2.12, type:
 
     sbt run
 
+You could also type:
+
+    sbt "; ++2.12.8; run"
+
 ## Running under Scala 2.13
 
 Editing `build.sbt` and changing these lines to read:
@@ -44,9 +48,9 @@ Yields this error:
 
 To run under Scala 2.13, you should be able to type:
 
-    sbt "; ++ 2.13.0; run"
+    sbt "; ++2.13.0; run"
     
-However, errors similar to the previously shown errors appear instead becauses Doobie has not released a version compatible with Scala 2.13 yet.
+However, errors similar to the previously shown errors appear instead because Doobie has not released a version compatible with Scala 2.13 yet.
 
 
 ## Running the Program as an Assembly
