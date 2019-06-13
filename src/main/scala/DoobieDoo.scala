@@ -26,13 +26,13 @@ object DoobieDoo extends App {
       connectEC <- ExecutionContexts.fixedThreadPool[IO](32)
       transactionEC <- ExecutionContexts.cachedThreadPool[IO]
       xa <- HikariTransactor.newHikariTransactor[IO](
-              "org.postgresql.Driver",                // driver classname
-              "jdbc:postgresql:world",                // connect URL
-              "postgres",                             // username
-              "",                                     // password
-              connectEC,                              // await connection here
-              transactionEC                           // execute JDBC operations here
-            )
+        "org.postgresql.Driver",   // driver classname
+        "jdbc:postgresql:world",   // connect URL
+        "postgres",                // username
+        "",                        // password
+        connectEC,                 // await connection here
+        transactionEC              // execute JDBC operations here
+      )
     } yield xa
 
   // Does not do anything (table is not dropped)
