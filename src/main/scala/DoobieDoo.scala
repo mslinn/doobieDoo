@@ -13,21 +13,21 @@ object DoobieDoo extends App {
   implicit val cs: ContextShift[IO] = IO.contextShift(ExecutionContexts.synchronous)
 
   val xaSynch: Aux[IO, Unit] = Transactor.fromDriverManager[IO](
-    "org.postgresql.Driver",     // driver classname
-    "jdbc:postgresql:world",     // connect URL (driver-specific)
-    "postgres",                  // user
-    "",                          // password
+    "org.postgresql.Driver",      // driver classname
+    "jdbc:postgresql:world",      // connect URL (driver-specific)
+    "postgres",                   // username
+    "",                           // password
     ExecutionContexts.synchronous // just for testing
   )
 
   /** Modified for Postgres from https://tpolecat.github.io/doobie/docs/14-Managing-Connections.html#using-a-hikaricp-connection-pool */
   val xaFixed: Resource[IO, HikariTransactor[IO]] =
     for {
-      connectEC <- ExecutionContexts.fixedThreadPool[IO](32)
+      connectEC     <- ExecutionContexts.fixedThreadPool[IO](32)
       transactionEC <- ExecutionContexts.cachedThreadPool[IO]
-      xa <- HikariTransactor.newHikariTransactor[IO](
+      xa            <- HikariTransactor.newHikariTransactor[IO](
         "org.postgresql.Driver",   // driver classname
-        "jdbc:postgresql:world",   // connect URL
+        "jdbc:postgresql:world",   // connect URL (driver-specific)
         "postgres",                // username
         "",                        // password
         connectEC,                 // await connection here
