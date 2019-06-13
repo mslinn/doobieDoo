@@ -140,6 +140,40 @@ Sample usage, which runs the `Hello` entry point in `src/main/scala/Hello.scala`
 $ bin/run DoobieDoo
 ```
 
+This error results:
+
+```
+[error] 1 error was encountered during merge
+[error] java.lang.RuntimeException: deduplicate: different file contents found in the following:
+[error] /home/mslinn/.cache/coursier/v1/https/repo1.maven.org/maven2/org/jruby/jcodings/jcodings/1.0.43/jcodings-1.0.43.jar:module-info.class
+[error] /home/mslinn/.cache/coursier/v1/https/repo1.maven.org/maven2/org/jruby/joni/joni/2.1.27/joni-2.1.27.jar:module-info.class
+[error]         at sbtassembly.Assembly$.applyStrategies(Assembly.scala:143)
+[error]         at sbtassembly.Assembly$.x$1$lzycompute$1(Assembly.scala:25)
+[error]         at sbtassembly.Assembly$.x$1$1(Assembly.scala:23)
+[error]         at sbtassembly.Assembly$.stratMapping$lzycompute$1(Assembly.scala:23)
+[error]         at sbtassembly.Assembly$.stratMapping$1(Assembly.scala:23)
+[error]         at sbtassembly.Assembly$.inputs$lzycompute$1(Assembly.scala:68)
+[error]         at sbtassembly.Assembly$.inputs$1(Assembly.scala:58)
+[error]         at sbtassembly.Assembly$.apply(Assembly.scala:85)
+[error]         at sbtassembly.Assembly$.$anonfun$assemblyTask$1(Assembly.scala:244)
+[error]         at scala.Function1.$anonfun$compose$1(Function1.scala:44)
+[error]         at sbt.internal.util.$tilde$greater.$anonfun$$u2219$1(TypeFunctions.scala:40)
+[error]         at sbt.std.Transform$$anon$4.work(System.scala:67)
+[error]         at sbt.Execute.$anonfun$submit$2(Execute.scala:269)
+[error]         at sbt.internal.util.ErrorHandling$.wideConvert(ErrorHandling.scala:16)
+[error]         at sbt.Execute.work(Execute.scala:278)
+[error]         at sbt.Execute.$anonfun$submit$1(Execute.scala:269)
+[error]         at sbt.ConcurrentRestrictions$$anon$4.$anonfun$submitValid$1(ConcurrentRestrictions.scala:178)
+[error]         at sbt.CompletionService$$anon$2.call(CompletionService.scala:37)
+[error]         at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+[error]         at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:515)
+[error]         at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+[error]         at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+[error]         at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+[error]         at java.base/java.lang.Thread.run(Thread.java:834)
+[error] (assembly) deduplicate: different file contents found in the following:
+```
+
 The `-j` option forces a rebuild of the fat jar. 
 Use it after modifying the source code.
 
