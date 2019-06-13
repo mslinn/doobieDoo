@@ -1,17 +1,20 @@
-import cats.effect.{ContextShift, IO, Resource}
-import doobie._
-import doobie.hikari.HikariTransactor
-import doobie.implicits._
-import doobie.util.ExecutionContexts
-import doobie.util.transactor.Transactor.Aux
-import scala.concurrent.duration._
-import scala.language.postfixOps
 
 /** Create a table called Country in a database called world according to the
   * [Doobie docs](https://tpolecat.github.io/doobie/docs/04-Selecting.html). */
 case class Country(code: String, name: String, population: Int, gnp: Option[Double])
 
 object DoobieDoo extends App {
+  import cats.effect.{ContextShift, IO, Resource}
+  import doobie._
+  import doobie.hikari.HikariTransactor
+  import doobie.implicits._
+  import doobie.util.ExecutionContexts
+  import doobie.util.transactor.Transactor.Aux
+  import scala.concurrent.duration._
+  import scala.language.postfixOps
+
+  /** Just used for non-blocking work.
+    * See https://tpolecat.github.io/doobie/migration.html#transactors-and-threading */
   implicit val cs: ContextShift[IO] = IO.contextShift(ExecutionContexts.synchronous)
 
   val sqlTimeout: Duration = 30 seconds
@@ -41,11 +44,11 @@ object DoobieDoo extends App {
       )
     } yield xa
 
-  // Does not do anything (table is not dropped)
+  // FIXME Does not do anything (table is not dropped)
   val drop = sql"""DROP TABLE IF EXISTS country""".update.run
 
-  // Does not do anything (table is not created)
-  // sample code did not have a large enough datatype to hold the US GNP so I increased it
+  // FIXME Does not do anything (table is not created)
+  // The sample code in the Doobie docs did not have a large enough datatype to hold the US Q1 GNP so I increased it
   val create = sql"""CREATE TABLE country (
                     |  code       character(3)  NOT NULL,
                     |  name       text          NOT NULL,
@@ -65,7 +68,7 @@ object DoobieDoo extends App {
   // I could not find a code example in the docs for deleting records. This is my version using xaSynch:
   sql"delete from country".update.run.transact(xaSynch).unsafeRunTimed(sqlTimeout)
 
-  /** Delete a case class */
+  /** Delete a case class instance from the database */
   def delete(country: Country): Option[Int] = xaAsynch.use { xa =>
     sql"delete from country where code = '${ country.code }'".update.run.transact(xa)
   }.unsafeRunTimed(sqlTimeout)
