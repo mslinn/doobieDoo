@@ -1,8 +1,5 @@
 # DoobieDoo
 
-[![Build Status](https://travis-ci.org/mslinn/DoobieDoo.svg?branch=master)](https://travis-ci.org/mslinn/DoobieDoo)
-[![GitHub version](https://badge.fury.io/gh/mslinn%2FDoobieDoo.svg)](https://badge.fury.io/gh/mslinn%2FDoobieDoo)
-
 This project contains an [Ammonite script](doobie.sc) and [sample code](src/main/scala/DoobieDoo.scala) for 
 [Doobie issue 913](https://github.com/tpolecat/doobie/issues/914).
 
