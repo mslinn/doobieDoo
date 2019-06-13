@@ -1,3 +1,8 @@
+assemblyMergeStrategy in assembly := {
+  case PathList("META-INF", "MANIFEST.MF") => MergeStrategy.discard
+  case _ => MergeStrategy.first
+}
+
 cancelable := true
 
 crossScalaVersions := Seq("2.12.8", "2.13.0")

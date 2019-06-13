@@ -144,35 +144,29 @@ $ bin/run
 Error:
 
 ```text
-[error] 1 error was encountered during merge
-[error] java.lang.RuntimeException: deduplicate: different file contents found in the following:
-[error] /home/mslinn/.ivy2/cache/org.jruby.joni/joni/jars/joni-2.1.27.jar:module-info.class
-[error] /home/mslinn/.ivy2/cache/org.jruby.jcodings/jcodings/jars/jcodings-1.0.43.jar:module-info.class
-[error]         at sbtassembly.Assembly$.applyStrategies(Assembly.scala:143)
-[error]         at sbtassembly.Assembly$.x$1$lzycompute$1(Assembly.scala:25)
-[error]         at sbtassembly.Assembly$.x$1$1(Assembly.scala:23)
-[error]         at sbtassembly.Assembly$.stratMapping$lzycompute$1(Assembly.scala:23)
-[error]         at sbtassembly.Assembly$.stratMapping$1(Assembly.scala:23)
-[error]         at sbtassembly.Assembly$.inputs$lzycompute$1(Assembly.scala:68)
-[error]         at sbtassembly.Assembly$.inputs$1(Assembly.scala:58)
-[error]         at sbtassembly.Assembly$.apply(Assembly.scala:85)
-[error]         at sbtassembly.Assembly$.$anonfun$assemblyTask$1(Assembly.scala:244)
-[error]         at scala.Function1.$anonfun$compose$1(Function1.scala:44)
-[error]         at sbt.internal.util.$tilde$greater.$anonfun$$u2219$1(TypeFunctions.scala:40)
-[error]         at sbt.std.Transform$$anon$4.work(System.scala:67)
-[error]         at sbt.Execute.$anonfun$submit$2(Execute.scala:269)
-[error]         at sbt.internal.util.ErrorHandling$.wideConvert(ErrorHandling.scala:16)
-[error]         at sbt.Execute.work(Execute.scala:278)
-[error]         at sbt.Execute.$anonfun$submit$1(Execute.scala:269)
-[error]         at sbt.ConcurrentRestrictions$$anon$4.$anonfun$submitValid$1(ConcurrentRestrictions.scala:178)
-[error]         at sbt.CompletionService$$anon$2.call(CompletionService.scala:37)
-[error]         at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
-[error]         at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:515)
-[error]         at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
-[error]         at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
-[error]         at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
-[error]         at java.base/java.lang.Thread.run(Thread.java:834)
+Error: A JNI error has occurred, please check your installation and try again
+Exception in thread "main" java.lang.SecurityException: Invalid signature file digest for Manifest main attributes
+        at java.base/sun.security.util.SignatureFileVerifier.processImpl(SignatureFileVerifier.java:336)
+        at java.base/sun.security.util.SignatureFileVerifier.process(SignatureFileVerifier.java:269)
+        at java.base/java.util.jar.JarVerifier.processEntry(JarVerifier.java:273)
+        at java.base/java.util.jar.JarVerifier.update(JarVerifier.java:230)
+        at java.base/java.util.jar.JarFile.initializeVerifier(JarFile.java:757)
+        at java.base/java.util.jar.JarFile.getInputStream(JarFile.java:838)
+        at java.base/jdk.internal.loader.URLClassPath$JarLoader$2.getInputStream(URLClassPath.java:866)
+        at java.base/jdk.internal.loader.Resource.cachedInputStream(Resource.java:77)
+        at java.base/jdk.internal.loader.Resource.getByteBuffer(Resource.java:161)
+        at java.base/jdk.internal.loader.BuiltinClassLoader.defineClass(BuiltinClassLoader.java:793)
+        at java.base/jdk.internal.loader.BuiltinClassLoader.findClassOnClassPathOrNull(BuiltinClassLoader.java:700)
+        at java.base/jdk.internal.loader.BuiltinClassLoader.loadClassOrNull(BuiltinClassLoader.java:623)
+        at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:581)
+        at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:178)
+        at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:521)
+        at java.base/java.lang.Class.forName0(Native Method)
+        at java.base/java.lang.Class.forName(Class.java:398)
+        at java.base/sun.launcher.LauncherHelper.loadMainClass(LauncherHelper.java:760)
+        at java.base/sun.launcher.LauncherHelper.checkAndLoadMain(LauncherHelper.java:655)
 ```
+
 The `-j` option forces a rebuild of the fat jar. 
 Use it after modifying the source code.
 
