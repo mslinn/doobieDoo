@@ -100,7 +100,7 @@ However, errors appear instead:
 [error]         at xsbt.boot.Boot.main(Boot.scala)
 ```
 
-Editing build.sbt and changing these lines to read:
+Editing `build.sbt` and changing these lines to read:
 
 ```
 //scalaVersion := "2.12.8"   // comment this line to use Scala 2.13
