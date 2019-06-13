@@ -141,32 +141,6 @@ Sample usage, which runs the `DoobieDoo` entry point in `src/main/scala/DoobieDo
 $ bin/run
 ```
 
-Error:
-
-```text
-Error: A JNI error has occurred, please check your installation and try again
-Exception in thread "main" java.lang.SecurityException: Invalid signature file digest for Manifest main attributes
-        at java.base/sun.security.util.SignatureFileVerifier.processImpl(SignatureFileVerifier.java:336)
-        at java.base/sun.security.util.SignatureFileVerifier.process(SignatureFileVerifier.java:269)
-        at java.base/java.util.jar.JarVerifier.processEntry(JarVerifier.java:273)
-        at java.base/java.util.jar.JarVerifier.update(JarVerifier.java:230)
-        at java.base/java.util.jar.JarFile.initializeVerifier(JarFile.java:757)
-        at java.base/java.util.jar.JarFile.getInputStream(JarFile.java:838)
-        at java.base/jdk.internal.loader.URLClassPath$JarLoader$2.getInputStream(URLClassPath.java:866)
-        at java.base/jdk.internal.loader.Resource.cachedInputStream(Resource.java:77)
-        at java.base/jdk.internal.loader.Resource.getByteBuffer(Resource.java:161)
-        at java.base/jdk.internal.loader.BuiltinClassLoader.defineClass(BuiltinClassLoader.java:793)
-        at java.base/jdk.internal.loader.BuiltinClassLoader.findClassOnClassPathOrNull(BuiltinClassLoader.java:700)
-        at java.base/jdk.internal.loader.BuiltinClassLoader.loadClassOrNull(BuiltinClassLoader.java:623)
-        at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:581)
-        at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:178)
-        at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:521)
-        at java.base/java.lang.Class.forName0(Native Method)
-        at java.base/java.lang.Class.forName(Class.java:398)
-        at java.base/sun.launcher.LauncherHelper.loadMainClass(LauncherHelper.java:760)
-        at java.base/sun.launcher.LauncherHelper.checkAndLoadMain(LauncherHelper.java:655)
-```
-
 The `-j` option forces a rebuild of the fat jar. 
 Use it after modifying the source code.
 
