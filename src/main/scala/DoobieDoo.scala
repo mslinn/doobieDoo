@@ -3,7 +3,9 @@
   * [Doobie docs](https://tpolecat.github.io/doobie/docs/04-Selecting.html). */
 case class Country(code: String, name: String, population: Int, gnp: Option[Double])
 
-object DoobieDoo extends App {
+object DoobieDoo extends App with DoobieLike
+
+trait DoobieLike {
   import cats.effect.{ContextShift, IO, Resource}
   import doobie._
   import doobie.hikari.HikariTransactor

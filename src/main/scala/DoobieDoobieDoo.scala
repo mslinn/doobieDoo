@@ -1,22 +1,32 @@
+import DoobieDoo.sqlTimeout
+import cats.effect.{ContextShift, IO}
 import cats.free.Free
 import doobie.free.connection
+import doobie.util.ExecutionContexts
 
 case class Foo(id: Int, value: String)
 
+/** doobie-quill returns ConnectionIO instances that must be evaluated with a transactor.
+See https://tpolecat.github.io/doobie/docs/03-Connecting.html */
 object DoobieDoobieDoo extends App {
   import doobie.quill.DoobieContext
   import io.getquill._
   import scala.language.postfixOps
 
+  // A ContextShift[IO] is needed to construct a Transactor[IO]. The passed ExecutionContext
+  // is where nonblocking operations will be executed. For testing here we're using a synchronous EC.
+  // TODO figure out how to use a multithreaded ExecutionContext
+  implicit val cs: ContextShift[IO] = IO.contextShift(ExecutionContexts.synchronous)
+
   val dc = new DoobieContext.Postgres(Literal)
-  import DoobieDoobieDoo.dc._
+  import dc._
 
   val q0: dc.Quoted[dc.EntityQuery[Country]] = quote { query[Country].filter(_.code == "USA") }
   val x0: doobie.ConnectionIO[List[Country]] = run(q0)
   println(s"USA countries: ${ x0 }") // output is not right, how to obtain the value?
 
   val q1: dc.Quoted[dc.EntityQuery[Country]] = quote { query[Country].filter(_.code == "GBR") }
-  val x: Free[connection.ConnectionOp, Option[Country]] = run(q1).map(_.headOption)
+  val x: doobie.ConnectionIO[List[Country]] = run(q1)
   println(s"GBR countries: ${ x }") // output is not right, how to obtain the value?
 
   val u1: dc.Quoted[dc.Update[Country]] = quote { query[Country].filter(_.name like "U%").update(_.name -> "foo") }
