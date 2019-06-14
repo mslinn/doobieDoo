@@ -14,13 +14,13 @@ object DoobieDoobieDoo extends App {
   import io.getquill._
   import scala.language.postfixOps
 
+  val dc = new DoobieContext.Postgres(Literal)
+  import dc._
+
   // A ContextShift[IO] is needed to construct a Transactor[IO]. The passed ExecutionContext
   // is where nonblocking operations will be executed. For testing here we're using a synchronous EC.
   // TODO figure out how to use a multi-threaded ExecutionContext
   implicit val cs: ContextShift[IO] = IO.contextShift(ExecutionContexts.synchronous)
-
-  val dc = new DoobieContext.Postgres(Literal)
-  import dc._
 
   val countries = run { query[Country].filter(_.code == "USA") }.transact(DoobieDoo.xaSynch)
   println(s"USA countries: ${ countries }")
