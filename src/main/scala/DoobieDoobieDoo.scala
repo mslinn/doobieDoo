@@ -22,7 +22,10 @@ object DoobieDoobieDoo extends App {
   // TODO figure out how to use a multi-threaded ExecutionContext
   implicit val cs: ContextShift[IO] = IO.contextShift(ExecutionContexts.synchronous)
 
-  val countries = run { query[Country].filter(_.code == "USA") }.transact(DoobieDoo.xaSynch)
+  val countriesIo = run { query[Country].filter(_.code == "USA") }.transact(DoobieDoo.xaSynch)
+  // Typically you do this at the 'edge' of your application lifecycle. If you are using Cats StreamApp it will be taken care of for you.
+  // See here for more details: https://github.com/jaspervz/todo-http4s-doobie
+  val countries: List[Country] = countriesIo.unsafeRunSync
   println(s"USA countries: ${ countries }")
 
   val q1: dc.Quoted[dc.EntityQuery[Country]] = quote { query[Country].filter(_.code == "GBR") }
