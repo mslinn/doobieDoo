@@ -41,6 +41,8 @@ libraryDependencies ++= Seq(
   "org.tpolecat"               %% "doobie-core"      % doobieVersion          withSources(),
   "org.tpolecat"               %% "doobie-postgres"  % doobieVersion          withSources(),
   "org.tpolecat"               %% "doobie-hikari"    % doobieVersion          withSources(),
+  "org.tpolecat"               %% "doobie-hikari"    % doobieVersion          withSources(),
+  "org.tpolecat"               %% "doobie-quill"     % doobieVersion          withSources(),
   //
   "org.scalatest"              %% "scalatest"        % "3.1.0-SNAP9" % Test withSources(),
   "org.tpolecat"               %% "doobie-scalatest" % doobieVersion % Test withSources(),
