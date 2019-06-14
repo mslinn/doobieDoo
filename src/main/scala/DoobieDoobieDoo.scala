@@ -9,6 +9,7 @@ case class Foo(id: Int, value: String)
 /** doobie-quill returns ConnectionIO instances that must be evaluated with a transactor.
 See https://tpolecat.github.io/doobie/docs/03-Connecting.html */
 object DoobieDoobieDoo extends App {
+  import doobie.util.ExecutionContexts
   import doobie.quill.DoobieContext
   import io.getquill._
   import scala.language.postfixOps
@@ -21,9 +22,8 @@ object DoobieDoobieDoo extends App {
   val dc = new DoobieContext.Postgres(Literal)
   import dc._
 
-  val q0: dc.Quoted[dc.EntityQuery[Country]] = quote { query[Country].filter(_.code == "USA") }
-  val x0: doobie.ConnectionIO[List[Country]] = run(q0)
-  println(s"USA countries: ${ x0 }") // output is not right, how to obtain the value?
+  val countries = run { query[Country].filter(_.code == "USA") }.transact(DoobieDoo.xaSynch)
+  println(s"USA countries: ${ countries }")
 
   val q1: dc.Quoted[dc.EntityQuery[Country]] = quote { query[Country].filter(_.code == "GBR") }
   val x: doobie.ConnectionIO[List[Country]] = run(q1)
