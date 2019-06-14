@@ -15,7 +15,7 @@ object DoobieDoobieDoo extends App {
 
   // A ContextShift[IO] is needed to construct a Transactor[IO]. The passed ExecutionContext
   // is where nonblocking operations will be executed. For testing here we're using a synchronous EC.
-  // TODO figure out how to use a multithreaded ExecutionContext
+  // TODO figure out how to use a multi-threaded ExecutionContext
   implicit val cs: ContextShift[IO] = IO.contextShift(ExecutionContexts.synchronous)
 
   val dc = new DoobieContext.Postgres(Literal)
